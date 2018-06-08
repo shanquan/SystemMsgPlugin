@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?><?xml version="1.0" encoding="UTF-8"?><!-- 插件的Id，安装后注册的Id为此id加js-moudle的name属性,即cordova_plugins.js里的id属性 -->
+<plugin id="cordova-plugin-systemmsg" version="0.0.1"
+        xmlns="http://apache.org/cordova/ns/plugins/1.0">
+    <!-- 插件名称 -->
+    <name>SystemMsg</name>
+    <!-- 插件描述 -->
+    <description>Description</description>
+    <!-- js文件的地址，安装后路径为：plugins/插件Id/src属性值 -->
+    <js-module name="SystemMsg" src="www/SystemMsgPlugin.js">
+        <!-- 跟asserts/cordova_plugins.js中填clobbers的值一样 -->
+        <runs/>
+        <clobbers target="SystemMsg"/>
+        <!--<merges target="SystemMsg" />-->
+    </js-module>
+    <!-- android -->
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <!-- config-file中包含的这段会原封不动的插入到config.xml文件中 -->
+            <feature name="SystemMsg">
+                <param name="android-package" value="com.byd.msgplugin.MsgPlugin"/>
+                <param name="onload" value="true"/>
+            </feature>
+        </config-file>
+        <config-file parent="/manifest" target="AndroidManifest.xml">
+            <!-- 权限 -->
+            <uses-permission android:name="android.permission.READ_SMS"/>
+            <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+            <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"/>
+            <uses-permission android:name="android.permission.BROADCAST_SMS"/>
+            <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+            <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+        </config-file>
+        <config-file parent="/manifest/application" target="AndroidManifest.xml">
+            <!-- 注册的组件 -->
+            <service android:label="NotificationMonitor"
+                     android:name="com.byd.msgplugin.NotificationMonitorService"
+                     android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+                <intent-filter>
+                    <action
+                            android:name="android.service.notification.NotificationListenerService"/>
+                </intent-filter>
+            </service>
+            <service android:label="MsgFirstService"
+                     android:name="com.byd.msgplugin.MsgFirstService"/>
+            <service android:enabled="true" android:exported="true" android:label="MsgSecondService"
+                     android:name="com.byd.msgplugin.MsgSecondService" android:process=":remote"/>
+
+            <service android:label="MsgThirdService"
+                     android:name="com.byd.msgplugin.MsgThirdService"/>
+
+
+            <activity android:name="com.byd.msgplugin.NotificationActivity"
+                      android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar"/>
+
+            <activity android:name="com.byd.msgplugin.InstalledAppActivity"
+                      android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar"/>
+        </config-file>
+
+        <!-- 本地代码，有多个文件就写多个source-file，src对应本项目，target对应安装后的目录 -->
+        <source-file src="src/android/MsgPlugin.java" target-dir="src/com/byd/msgplugin"/>
+        <source-file src="src/android/NotificationMonitorService.java"
+                     target-dir="src/com/byd/msgplugin"/>
+        <source-file src="src/android/MsgFirstService.java" target-dir="src/com/byd/msgplugin"/>
+        <source-file src="src/android/MsgSecondService.java" target-dir="src/com/byd/msgplugin"/>
+        <source-file src="src/android/MsgThirdService.java" target-dir="src/com/byd/msgplugin"/>
+        <source-file src="src/android/PermissionHelper.java" target-dir="src/com/byd/msgplugin"/>
+        <source-file src="src/android/ProcessService.aidl"
+                     target-dir="src/com/byd/msgplugin/aidl"/>
+        <source-file src="src/android/NotificationActivity.java"
+                     target-dir="src/com/byd/msgplugin"/>
+        <source-file src="src/android/MResource.java" target-dir="src/com/byd/msgplugin"/>
+        <source-file src="src/android/AppAdapter.java" target-dir="src/com/byd/msgplugin"/>
+        <source-file src="src/android/SelectAppAdapter.java" target-dir="src/com/byd/msgplugin"/>
+        <source-file src="src/android/InstalledAppActivity.java" target-dir="src/com/byd/msgplugin"/>
+        <source-file src="src/android/res/activity_notification.xml" target-dir="res/layout"/>
+        <source-file src="src/android/res/activity_installed_app.xml" target-dir="res/layout"/>
+        <source-file src="src/android/res/item_applst.xml" target-dir="res/layout"/>
+        <source-file src="src/android/res/item_select_list.xml" target-dir="res/layout"/>
+        <source-file src="src/android/res/ic_launcher.png" target-dir="res/drawable-xhdpi"/>
+        <source-file src="src/android/res/back_icon.png" target-dir="res/drawable-xhdpi"/>
+        <source-file src="src/android/res/settings_icon.png" target-dir="res/drawable-xhdpi"/>
+    </platform>
+    <platform name="ios">
+        <config-file target="config.xml" parent="/widget">
+            <feature name="SystemMsg">
+                <param name="ios-package" value="SystemMsg" onload="true"/>
+            </feature>
+        </config-file>
+        <header-file src="src/ios/SystemMsg.h" target-dir="SystemMsg" />
+        <source-file src="src/ios/SystemMsg.m" target-dir="SystemMsg" />
+        <framework src="CoreTelephony.framework"/>
+    </platform>
+</plugin>
