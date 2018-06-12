@@ -14,8 +14,6 @@ import android.util.Log;
 
 import com.byd.msgplugin.aidl.ProcessService;
 
-import com.byd.ghydy.bracelet.R;
-
 /**
  * Created by yang.yu11 on 2017/10/23.
  */
@@ -48,8 +46,8 @@ public class MsgFirstService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Notification.Builder builder = new Notification.Builder(this);
-//        builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setSmallIcon(R.drawable.ic_launcher);
+//      builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setSmallIcon(MResource.getIdByName(this, "drawable", "ic_launcher"));
         startForeground(250, builder.build());
         startService(new Intent(this, MsgThirdService.class));
         MsgFirstService.this.bindService(new Intent(this, MsgSecondService.class), conn, Context.BIND_IMPORTANT);

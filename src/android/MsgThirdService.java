@@ -14,7 +14,6 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 
 import java.util.List;
-import com.byd.ghydy.bracelet.R;
 
 /**
  * Created by yang.yu11 on 2017/10/23.
@@ -60,7 +59,8 @@ public class MsgThirdService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         ensureCollectorRunning();
         Notification.Builder builder = new Notification.Builder(this);
-        builder.setSmallIcon(R.drawable.ic_launcher);
+        // builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setSmallIcon(MResource.getIdByName(this, "drawable", "ic_launcher"));
         startForeground(250, builder.build());
         new Thread(new Runnable() {
             @Override
